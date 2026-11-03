@@ -9,7 +9,7 @@ Runs on top of the stock Pixel vendor **BP1A.250505.005**. Port by **plus_minus*
 
 | File | Link |
 |---|---|
-| NothingOS5-komodo-v1.0.7z | **Google Drive:** `LINK` · **Mega:** `LINK` |
+| NothingOS5-komodo-v1.0.7z (3.6 GB) | [**Google Drive**](https://drive.google.com/file/d/1-L0qK9bJjvT9EegIDCUUqTeBY2yz1S65/view?usp=sharing) |
 
 SHA256 checksums of the images are in [SHA256SUMS](SHA256SUMS) (also inside the archive).
 
