@@ -5,6 +5,12 @@ Runs on top of the stock Pixel vendor **BP1A.250505.005**. Port by **plus_minus*
 
 [Русский](#русский) · [English](#english)
 
+## Screenshots
+
+<p>
+<img src="screenshots/1_lockscreen.png" width="30%"> <img src="screenshots/2_home.png" width="30%"> <img src="screenshots/3_about.png" width="30%">
+</p>
+
 ## Download
 
 | File | Link |
