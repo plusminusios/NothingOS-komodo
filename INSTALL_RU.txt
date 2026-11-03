@@ -1,0 +1,62 @@
+NothingOS 5.0 (Nothing Phone 3, Android 17) для Pixel 9 Pro XL (komodo)
+=======================================================================
+Порт by plus_minus. Всё на свой страх и риск: разблокированный загрузчик,
+полный вайп данных. Сделайте бэкап.
+
+ЧТО НУЖНО
+- Pixel 9 Pro XL (komodo) с РАЗБЛОКИРОВАННЫМ загрузчиком.
+- Свежие platform-tools (fastboot) от Google, версия 35+.
+- Заводская прошивка Pixel komodo BP1A.250505.005 (Android 15, май 2025):
+  https://developers.google.com/android/images#komodo
+  Порт работает поверх вендора именно этой версии, на других не проверялся.
+
+УСТАНОВКА
+1. Прошейте сток BP1A.250505.005 (flash-all из заводского архива или
+   https://flash.android.com). Загрузитесь один раз, чтобы убедиться, что всё
+   работает, затем выключите телефон.
+2. Зайдите в bootloader (Питание + Громкость вниз), подключите USB.
+3. Распакуйте архив с портом в отдельную папку.
+4. Linux/macOS:  ./flash-all.sh
+   Windows:      flash-all.bat   (fastboot.exe должен быть в PATH или в этой папке)
+   Скрипт сам:
+     - проверит, что это komodo и стоит нужный загрузчик;
+     - прошьёт vendor_boot.img и vbmeta.img (с --disable-verity --disable-verification);
+     - перезагрузит в fastbootd и прошьёт product, system, system_ext;
+     - предложит сделать вайп данных (ОБЯЗАТЕЛЬНО при переходе со стока);
+     - перезагрузит телефон.
+5. Первая загрузка 3-5 минут. Пройдите настройку.
+
+РУЧНАЯ УСТАНОВКА (то же самое, что делает скрипт)
+  fastboot flash vendor_boot vendor_boot.img
+  fastboot flash --disable-verity --disable-verification vbmeta vbmeta.img
+  fastboot reboot fastboot
+  fastboot flash product product.img
+  fastboot flash system system.img
+  fastboot flash system_ext system_ext.img
+  fastboot -w
+  fastboot reboot
+
+ПРОБЛЕМЫ ПРИ ПРОШИВКЕ
+- "Not enough space to resize partition": в super занято место разделами
+  второго слота. В fastbootd выполните
+    fastboot getvar current-slot
+  и удалите разделы ДРУГОГО слота (например, если текущий b):
+    fastboot delete-logical-partition product_a
+    fastboot delete-logical-partition system_a
+    fastboot delete-logical-partition system_ext_a
+  затем повторите прошивку product/system/system_ext.
+- Bootloop: повторите вайп (fastboot -w). Если не помогло, откатитесь на сток.
+
+ОТКАТ НА СТОК
+  Прошейте заводской образ BP1A.250505.005 (flash-all.bat/.sh из архива Google
+  или flash.android.com) с вайпом. Это вернёт vendor_boot, vbmeta и все системные
+  разделы.
+
+ЧТО РАБОТАЕТ / НЕ РАБОТАЕТ
+  См. README.md / шапку темы.
+- Камера: Pixel Camera (GCam) встроена, со всеми модулями и EdgeTPU.
+  Камера Nothing убрана: она не работает с HAL камеры Pixel.
+- Нет разблокировки по лицу.
+- VoLTE/VoWiFi не проверены.
+- Root не входит в сборку. KernelSU/Magisk ставятся как обычно (патч init_boot
+  из заводского архива BP1A.250505.005).

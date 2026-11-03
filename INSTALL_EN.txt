@@ -1,0 +1,58 @@
+NothingOS 5.0 (Nothing Phone 3, Android 17) for Pixel 9 Pro XL (komodo)
+=======================================================================
+Port by plus_minus. Use at your own risk: unlocked bootloader, full data wipe.
+Back up your data first.
+
+REQUIREMENTS
+- Pixel 9 Pro XL (komodo) with an UNLOCKED bootloader.
+- Recent Google platform-tools (fastboot 35+).
+- Pixel factory image komodo BP1A.250505.005 (Android 15, May 2025):
+  https://developers.google.com/android/images#komodo
+  The port runs on top of this exact vendor build; other builds are untested.
+
+INSTALL
+1. Flash stock BP1A.250505.005 (factory flash-all or https://flash.android.com).
+   Boot it once to make sure it works, then power off.
+2. Enter bootloader (Power + Vol Down), connect USB.
+3. Extract the port archive into its own folder.
+4. Linux/macOS:  ./flash-all.sh
+   Windows:      flash-all.bat   (fastboot.exe must be in PATH or in this folder)
+   The script:
+     - checks the device is komodo on the expected bootloader;
+     - flashes vendor_boot.img and vbmeta.img (with verity/verification disabled);
+     - reboots to fastbootd and flashes product, system, system_ext;
+     - offers a data wipe (REQUIRED when coming from stock);
+     - reboots.
+5. First boot takes 3-5 minutes.
+
+MANUAL INSTALL (same as the script)
+  fastboot flash vendor_boot vendor_boot.img
+  fastboot flash --disable-verity --disable-verification vbmeta vbmeta.img
+  fastboot reboot fastboot
+  fastboot flash product product.img
+  fastboot flash system system.img
+  fastboot flash system_ext system_ext.img
+  fastboot -w
+  fastboot reboot
+
+TROUBLESHOOTING
+- "Not enough space to resize partition": the other slot's partitions fill the
+  super partition. In fastbootd run `fastboot getvar current-slot`, then delete
+  the OTHER slot's partitions (example for current slot b):
+    fastboot delete-logical-partition product_a
+    fastboot delete-logical-partition system_a
+    fastboot delete-logical-partition system_ext_a
+  and flash product/system/system_ext again.
+- Bootloop: wipe again (fastboot -w). If that doesn't help, go back to stock.
+
+BACK TO STOCK
+  Flash factory image BP1A.250505.005 with wipe (Google flash-all or
+  flash.android.com). This restores vendor_boot, vbmeta and all system partitions.
+
+NOTES
+- Camera: Pixel Camera (GCam) is built in, with all lenses and EdgeTPU.
+  Nothing Camera is removed (it does not work with the Pixel camera HAL).
+- No face unlock.
+- VoLTE/VoWiFi untested.
+- No root included. KernelSU/Magisk install as usual (patch init_boot from
+  the BP1A.250505.005 factory image).
