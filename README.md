@@ -13,6 +13,8 @@ Runs on top of the stock Pixel vendor **BP1A.250505.005**. Port by **plus_minus*
 
 SHA256 checksums of the images are in [SHA256SUMS](SHA256SUMS) (also inside the archive).
 
+**Discussion / Обсуждение:** [XDA thread](https://xdaforums.com/t/rom-port-komodo-nothingos-5-0-android-17-for-pixel-9-pro-xl.4807503/)
+
 > This repository has only the flash scripts and instructions. The system images are distributed as an archive (links above).
 
 ---
